@@ -1,141 +1,363 @@
-# 🚀 Welcome to Z.ai Code Scaffold
+# 🛍️ KSA Fashion - E-commerce Website
 
-A modern, production-ready web application scaffold powered by cutting-edge technologies, designed to accelerate your development with [Z.ai](https://chat.z.ai)'s AI-powered coding assistance.
+A complete e-commerce website built for the Saudi Arabian market, featuring traditional and contemporary clothing with modern web technologies.
 
-## ✨ Technology Stack
+## 🚀 Features
 
-This scaffold provides a robust foundation built with:
+### 🛒 E-commerce Functionality
+- **Product Catalog** - Browse and search through clothing collections
+- **Shopping Cart** - Full cart functionality with add/remove/update items
+- **Checkout Process** - Multi-step checkout with manual bank transfer payment
+- **Order Management** - Complete order tracking and status management
+- **User Accounts** - Customer registration, login, and profile management
+- **Admin Panel** - Comprehensive admin dashboard for store management
 
-### 🎯 Core Framework
-- **⚡ Next.js 15** - The React framework for production with App Router
-- **📘 TypeScript 5** - Type-safe JavaScript for better developer experience
-- **🎨 Tailwind CSS 4** - Utility-first CSS framework for rapid UI development
+### 🎨 User Interface
+- **Responsive Design** - Mobile-first design that works on all devices
+- **Search & Filters** - Advanced product filtering by category, price, size, color
+- **Product Variants** - Size and color selection for products
+- **Image Gallery** - Product image galleries with zoom functionality
+- **Interactive UI** - Smooth animations and modern user experience
 
-### 🧩 UI Components & Styling
-- **🧩 shadcn/ui** - High-quality, accessible components built on Radix UI
-- **🎯 Lucide React** - Beautiful & consistent icon library
-- **🌈 Framer Motion** - Production-ready motion library for React
-- **🎨 Next Themes** - Perfect dark mode in 2 lines of code
+### 🔧 Technical Features
+- **Database** - SQLite with Prisma ORM for efficient data management
+- **Authentication** - NextAuth.js for secure user authentication
+- **Payment System** - Manual bank transfer with admin verification
+- **Real-time Updates** - Socket.io integration for real-time features
+- **Type Safety** - Full TypeScript implementation with proper typing
 
-### 📋 Forms & Validation
-- **🎣 React Hook Form** - Performant forms with easy validation
-- **✅ Zod** - TypeScript-first schema validation
+## 🛠️ Technology Stack
 
-### 🔄 State Management & Data Fetching
-- **🐻 Zustand** - Simple, scalable state management
-- **🔄 TanStack Query** - Powerful data synchronization for React
-- **🌐 Axios** - Promise-based HTTP client
+### Frontend
+- **Next.js 15** - React framework with App Router
+- **TypeScript 5** - Type-safe JavaScript
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **shadcn/ui** - High-quality UI components
+- **Lucide React** - Beautiful icon library
+- **Framer Motion** - Animation library
+- **React Hook Form** - Form handling with validation
+- **Zod** - Schema validation
 
-### 🗄️ Database & Backend
-- **🗄️ Prisma** - Next-generation Node.js and TypeScript ORM
-- **🔐 NextAuth.js** - Complete open-source authentication solution
+### Backend
+- **Next.js API Routes** - Serverless API endpoints
+- **Prisma ORM** - Database ORM with SQLite
+- **NextAuth.js** - Authentication solution
+- **Socket.io** - Real-time communication
 
-### 🎨 Advanced UI Features
-- **📊 TanStack Table** - Headless UI for building tables and datagrids
-- **🖱️ DND Kit** - Modern drag and drop toolkit for React
-- **📊 Recharts** - Redefined chart library built with React and D3
-- **🖼️ Sharp** - High performance image processing
+### Development Tools
+- **Cross-env** - Cross-platform environment variables
+- **Nodemon** - Development server with auto-reload
+- **ESLint** - Code linting and formatting
+- **tsx** - TypeScript execution
 
-### 🌍 Internationalization & Utilities
-- **🌍 Next Intl** - Internationalization library for Next.js
-- **📅 Date-fns** - Modern JavaScript date utility library
-- **🪝 ReactUse** - Collection of essential React hooks for modern development
+## 📦 Installation & Setup
 
-## 🎯 Why This Scaffold?
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
 
-- **🏎️ Fast Development** - Pre-configured tooling and best practices
-- **🎨 Beautiful UI** - Complete shadcn/ui component library with advanced interactions
-- **🔒 Type Safety** - Full TypeScript configuration with Zod validation
-- **📱 Responsive** - Mobile-first design principles with smooth animations
-- **🗄️ Database Ready** - Prisma ORM configured for rapid backend development
-- **🔐 Auth Included** - NextAuth.js for secure authentication flows
-- **📊 Data Visualization** - Charts, tables, and drag-and-drop functionality
-- **🌍 i18n Ready** - Multi-language support with Next Intl
-- **🚀 Production Ready** - Optimized build and deployment settings
-- **🤖 AI-Friendly** - Structured codebase perfect for AI assistance
-
-## 🚀 Quick Start
-
+### Install Dependencies
 ```bash
+# Clone the repository
+git clone https://github.com/Abdullah34123513/cloth.git
+cd cloth
+
 # Install dependencies
 npm install
+```
 
+### Database Setup
+```bash
+# Push database schema
+npm run db:push
+
+# Generate Prisma client
+npm run db:generate
+```
+
+### Environment Variables
+Create a `.env` file in the root directory:
+
+```env
+# Database
+DATABASE_URL="file:./db/custom.db"
+
+# NextAuth
+NEXTAUTH_SECRET="your-secret-key-here"
+NEXTAUTH_URL="http://localhost:3000"
+```
+
+## 🚀 Running the Application
+
+### Development Server
+
+#### For macOS/Linux:
+```bash
 # Start development server
 npm run dev
 
-# Build for production
+# The application will be available at http://localhost:3000
+```
+
+#### For Windows:
+```bash
+# Start development server (Windows compatible)
+npm run dev:windows
+
+# The application will be available at http://localhost:3000
+```
+
+### Production Build
+
+#### For macOS/Linux:
+```bash
+# Build the application
 npm run build
 
 # Start production server
 npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see your application running.
+#### For Windows:
+```bash
+# Build the application (Windows compatible)
+npm run build:windows
 
-## 🤖 Powered by Z.ai
+# Start production server (Windows compatible)
+npm run start:windows
+```
 
-This scaffold is optimized for use with [Z.ai](https://chat.z.ai) - your AI assistant for:
+### Database Commands
+```bash
+# Push database schema changes
+npm run db:push
 
-- **💻 Code Generation** - Generate components, pages, and features instantly
-- **🎨 UI Development** - Create beautiful interfaces with AI assistance  
-- **🔧 Bug Fixing** - Identify and resolve issues with intelligent suggestions
-- **📝 Documentation** - Auto-generate comprehensive documentation
-- **🚀 Optimization** - Performance improvements and best practices
+# Generate Prisma client
+npm run db:generate
 
-Ready to build something amazing? Start chatting with Z.ai at [chat.z.ai](https://chat.z.ai) and experience the future of AI-powered development!
+# Run database migrations
+npm run db:migrate
 
-## 📁 Project Structure
+# Reset database
+npm run db:reset
+```
+
+## 🎯 Available Scripts
+
+| Script | Description | Platform |
+|--------|-------------|----------|
+| `npm run dev` | Start development server | macOS/Linux |
+| `npm run dev:windows` | Start development server | Windows |
+| `npm run build` | Build for production | macOS/Linux |
+| `npm run build:windows` | Build for production | Windows |
+| `npm run start` | Start production server | macOS/Linux |
+| `npm run start:windows` | Start production server | Windows |
+| `npm run lint` | Run ESLint | All |
+| `npm run db:push` | Push database schema | All |
+| `npm run db:generate` | Generate Prisma client | All |
+| `npm run db:migrate` | Run migrations | All |
+| `npm run db:reset` | Reset database | All |
+
+## 👥 Demo Credentials
+
+### Customer Account
+- **Email**: customer@example.com
+- **Password**: password123
+
+### Admin Account
+- **Email**: admin@example.com
+- **Password**: password123
+
+## 🏗️ Project Structure
 
 ```
 src/
-├── app/                 # Next.js App Router pages
-├── components/          # Reusable React components
-│   └── ui/             # shadcn/ui components
-├── hooks/              # Custom React hooks
-└── lib/                # Utility functions and configurations
+├── app/                          # Next.js App Router
+│   ├── about/                     # About Us page
+│   ├── account/                   # User account pages
+│   ├── admin/                     # Admin panel
+│   ├── api/                       # API routes
+│   │   └── auth/                   # Authentication API
+│   ├── cart/                      # Shopping cart
+│   ├── checkout/                  # Checkout process
+│   ├── contact/                   # Contact page
+│   ├── faq/                       # FAQ page
+│   ├── login/                     # Login page
+│   ├── orders/                    # Order management
+│   ├── product/                   # Product details
+│   │   └── [id]/                 # Dynamic product pages
+│   ├── shop/                      # Product listing
+│   ├── signup/                    # Registration page
+│   ├── layout.tsx                # Root layout
+│   └── page.tsx                  # Homepage
+├── components/                    # React components
+│   ├── layout/                    # Layout components
+│   │   ├── footer.tsx            # Footer component
+│   │   └── navigation.tsx        # Navigation component
+│   └── ui/                       # shadcn/ui components
+├── hooks/                         # Custom React hooks
+├── lib/                          # Utility libraries
+│   ├── auth/                     # Authentication configuration
+│   ├── db.ts                     # Database connection
+│   └── utils.ts                  # Utility functions
+└── globals.css                   # Global styles
 ```
 
-## 🎨 Available Features & Components
+## 🎨 Key Pages
 
-This scaffold includes a comprehensive set of modern web development tools:
+### Homepage (`/`)
+- Hero section with call-to-action
+- Featured products showcase
+- Category browsing
+- Newsletter subscription
+- Trust badges and features
 
-### 🧩 UI Components (shadcn/ui)
-- **Layout**: Card, Separator, Aspect Ratio, Resizable Panels
-- **Forms**: Input, Textarea, Select, Checkbox, Radio Group, Switch
-- **Feedback**: Alert, Toast (Sonner), Progress, Skeleton
-- **Navigation**: Breadcrumb, Menubar, Navigation Menu, Pagination
-- **Overlay**: Dialog, Sheet, Popover, Tooltip, Hover Card
-- **Data Display**: Badge, Avatar, Calendar
+### Shop (`/shop`)
+- Product grid/list view toggle
+- Advanced search and filtering
+- Category navigation
+- Pagination
+- Sorting options
 
-### 📊 Advanced Data Features
-- **Tables**: Powerful data tables with sorting, filtering, pagination (TanStack Table)
-- **Charts**: Beautiful visualizations with Recharts
-- **Forms**: Type-safe forms with React Hook Form + Zod validation
+### Product Detail (`/product/[id]`)
+- Image gallery with thumbnails
+- Product variants (size/color)
+- Add to cart functionality
+- Product information tabs
+- Related products
+- Customer reviews
 
-### 🎨 Interactive Features
-- **Animations**: Smooth micro-interactions with Framer Motion
-- **Drag & Drop**: Modern drag-and-drop functionality with DND Kit
-- **Theme Switching**: Built-in dark/light mode support
+### Shopping Cart (`/cart`)
+- Cart item management
+- Quantity updates
+- Promo code support
+- Order summary
+- Shipping calculation
+- Progress to checkout
 
-### 🔐 Backend Integration
-- **Authentication**: Ready-to-use auth flows with NextAuth.js
-- **Database**: Type-safe database operations with Prisma
-- **API Client**: HTTP requests with Axios + TanStack Query
-- **State Management**: Simple and scalable with Zustand
+### Checkout (`/checkout`)
+- Multi-step checkout process
+- Shipping information form
+- Bank transfer payment option
+- Order confirmation
+- Payment instructions
 
-### 🌍 Production Features
-- **Internationalization**: Multi-language support with Next Intl
-- **Image Optimization**: Automatic image processing with Sharp
-- **Type Safety**: End-to-end TypeScript with Zod validation
-- **Essential Hooks**: 100+ useful React hooks with ReactUse for common patterns
+### User Account (`/account`)
+- Profile management
+- Order history
+- Address management
+- Security settings
+- Two-factor authentication
 
-## 🤝 Get Started with Z.ai
+### Admin Panel (`/admin`)
+- Dashboard with statistics
+- Product management (CRUD)
+- Order management and tracking
+- Payment verification system
+- User management
+- Analytics and reporting
 
-1. **Clone this scaffold** to jumpstart your project
-2. **Visit [chat.z.ai](https://chat.z.ai)** to access your AI coding assistant
-3. **Start building** with intelligent code generation and assistance
-4. **Deploy with confidence** using the production-ready setup
+### Static Pages
+- **About Us** - Company story and values
+- **Contact** - Contact form and information
+- **FAQ** - Frequently asked questions
+
+## 🔧 Key Features
+
+### Search & Filter System
+- Full-text product search
+- Filter by category, price range, size, color
+- Sorting options (price, rating, newest)
+- Real-time filter updates
+
+### Shopping Cart
+- Add/remove/update items
+- Quantity controls
+- Promo code integration
+- Stock availability checking
+- Persistent cart storage
+
+### Checkout Process
+- Multi-step form validation
+- Guest checkout option
+- Shipping address management
+- Bank transfer payment
+- Order confirmation
+
+### Admin Panel
+- Product CRUD operations
+- Order status management
+- Payment verification
+- User management
+- Dashboard analytics
+
+### Authentication
+- User registration and login
+- Role-based access control
+- Password recovery
+- Session management
+- Protected routes
+
+## 🌟 Responsive Design
+
+The application is fully responsive and optimized for:
+- **Desktop** (1200px+)
+- **Tablet** (768px - 1199px)
+- **Mobile** (320px - 767px)
+
+Key responsive features:
+- Mobile-first navigation with hamburger menu
+- Responsive product grids
+- Touch-friendly interface elements
+- Optimized form layouts for all devices
+
+## 🔒 Security Features
+
+- **Authentication** - Secure login with NextAuth.js
+- **Authorization** - Role-based access control
+- **Input Validation** - Zod schema validation
+- **CSRF Protection** - Built-in Next.js security
+- **Environment Variables** - Secure configuration management
+
+## 🚀 Deployment
+
+### Build for Production
+```bash
+# Build the application
+npm run build
+
+# Start production server
+npm start
+```
+
+### Environment Setup for Production
+```env
+# Production environment variables
+NODE_ENV=production
+DATABASE_URL="file:./db/custom.db"
+NEXTAUTH_SECRET="your-production-secret"
+NEXTAUTH_URL="https://your-domain.com"
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 🆘 Support
+
+For support and questions:
+- Create an issue in the GitHub repository
+- Check the FAQ page in the application
+- Contact the development team
 
 ---
 
-Built with ❤️ for the developer community. Supercharged by [Z.ai](https://chat.z.ai) 🚀
+Built with ❤️ for the Saudi Arabian e-commerce market.
