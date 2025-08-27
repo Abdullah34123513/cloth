@@ -101,11 +101,19 @@ npm run dev
 
 #### For Windows:
 ```bash
-# Start development server (Windows compatible)
+# Option 1: Using npm script (recommended)
 npm run dev:windows
+
+# Option 2: Using simple npm script (without logging)
+npm run dev:windows-simple
+
+# Option 3: Using batch file (double-click in Explorer)
+dev.bat
 
 # The application will be available at http://localhost:3000
 ```
+
+**Note for Windows users**: The `npm run dev` script includes logging with `tee` which is not available on Windows by default. Use one of the Windows-specific options above.
 
 ### Production Build
 
@@ -148,6 +156,8 @@ npm run db:reset
 |--------|-------------|----------|
 | `npm run dev` | Start development server | macOS/Linux |
 | `npm run dev:windows` | Start development server | Windows |
+| `npm run dev:windows-simple` | Start development server (no logging) | Windows |
+| `dev.bat` | Start development server (batch file) | Windows |
 | `npm run build` | Build for production | macOS/Linux |
 | `npm run build:windows` | Build for production | Windows |
 | `npm run start` | Start production server | macOS/Linux |
@@ -157,6 +167,16 @@ npm run db:reset
 | `npm run db:generate` | Generate Prisma client | All |
 | `npm run db:migrate` | Run migrations | All |
 | `npm run db:reset` | Reset database | All |
+
+### Windows Development Options
+
+For Windows users, you have multiple options to start the development server:
+
+1. **Recommended**: `npm run dev:windows`
+2. **Simple**: `npm run dev:windows-simple` (no logging)
+3. **Batch File**: Double-click `dev.bat` in Explorer or run `dev.bat` in command prompt
+
+**Note**: The `npm run dev` script uses `tee` for logging, which is not available on Windows by default. Use the Windows-specific options above.
 
 ## 👥 Demo Credentials
 
