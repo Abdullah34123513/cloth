@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Star, Heart, ShoppingCart, Filter, Grid, List, Search } from "lucide-react";
 
+<<<<<<< HEAD
 interface Product {
   id: string;
   name: string;
@@ -29,6 +30,11 @@ interface Product {
 export default function ShopPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+=======
+export default function ShopPage() {
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+>>>>>>> origin/master
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState("grid");
   const [showFilters, setShowFilters] = useState(false);
@@ -37,8 +43,13 @@ export default function ShopPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 1000]);
+<<<<<<< HEAD
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
+=======
+  const [selectedSizes, setSelectedSizes] = useState([]);
+  const [selectedColors, setSelectedColors] = useState([]);
+>>>>>>> origin/master
   const [sortBy, setSortBy] = useState("featured");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
@@ -54,7 +65,11 @@ export default function ShopPage() {
   const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
   const colors = ["Black", "White", "Blue", "Red", "Green", "Brown", "Gray"];
 
+<<<<<<< HEAD
   const mockProducts: Product[] = [
+=======
+  const mockProducts = [
+>>>>>>> origin/master
     {
       id: "1",
       name: "Premium Thobe",
@@ -219,7 +234,11 @@ export default function ShopPage() {
     setCurrentPage(1);
   }, [products, searchTerm, selectedCategory, priceRange, selectedSizes, selectedColors, sortBy]);
 
+<<<<<<< HEAD
   const handleSizeChange = (size: string, checked: boolean | string) => {
+=======
+  const handleSizeChange = (size, checked) => {
+>>>>>>> origin/master
     if (checked) {
       setSelectedSizes([...selectedSizes, size]);
     } else {
@@ -227,7 +246,11 @@ export default function ShopPage() {
     }
   };
 
+<<<<<<< HEAD
   const handleColorChange = (color: string, checked: boolean | string) => {
+=======
+  const handleColorChange = (color, checked) => {
+>>>>>>> origin/master
     if (checked) {
       setSelectedColors([...selectedColors, color]);
     } else {

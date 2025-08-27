@@ -128,7 +128,11 @@ export default function AccountPage() {
       PROCESSING: { variant: "default", icon: Package, label: "Processing" },
       SHIPPED: { variant: "secondary", icon: Truck, label: "Shipped" },
       DELIVERED: { variant: "default", icon: CheckCircle, label: "Delivered" },
+<<<<<<< HEAD
       CANCELLED: { variant: "destructive", icon: Clock, label: "Cancelled" }
+=======
+      CANCELLED: { variant: "destructive", label: "Cancelled" }
+>>>>>>> origin/master
     };
 
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.PENDING;

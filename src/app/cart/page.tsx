@@ -19,6 +19,7 @@ import {
   RotateCcw
 } from "lucide-react";
 
+<<<<<<< HEAD
 interface CartItem {
   id: string;
   productId: string;
@@ -35,13 +36,21 @@ interface CartItem {
 
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+=======
+export default function CartPage() {
+  const [cartItems, setCartItems] = useState([]);
+>>>>>>> origin/master
   const [loading, setLoading] = useState(true);
   const [promoCode, setPromoCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [promoError, setPromoError] = useState("");
 
   // Mock cart data
+<<<<<<< HEAD
   const mockCartItems: CartItem[] = [
+=======
+  const mockCartItems = [
+>>>>>>> origin/master
     {
       id: "1",
       productId: "1",
@@ -89,7 +98,11 @@ export default function CartPage() {
     }, 1000);
   }, []);
 
+<<<<<<< HEAD
   const updateQuantity = (itemId: string, newQuantity: number) => {
+=======
+  const updateQuantity = (itemId, newQuantity) => {
+>>>>>>> origin/master
     if (newQuantity < 1) return;
     
     setCartItems(prevItems =>
@@ -101,7 +114,11 @@ export default function CartPage() {
     );
   };
 
+<<<<<<< HEAD
   const removeItem = (itemId: string) => {
+=======
+  const removeItem = (itemId) => {
+>>>>>>> origin/master
     setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
   };
 
