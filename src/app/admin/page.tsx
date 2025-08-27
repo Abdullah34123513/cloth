@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,16 @@ export default function AdminPage() {
   const { data: session } = useSession();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("dashboard");
+
+  useEffect(() => {
+    if (!session || session.user?.role !== "ADMIN") {
+      router.push("/login");
+    }
+  }, [session, router]);
+
+  if (!session || session.user?.role !== "ADMIN") {
+    return null;
+  }
 
   // Mock dashboard data
   const stats = {
@@ -160,7 +170,6 @@ export default function AdminPage() {
   };
 
   if (!session || session.user?.role !== "ADMIN") {
-    router.push("/login");
     return null;
   }
 
