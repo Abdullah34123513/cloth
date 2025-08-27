@@ -19,7 +19,6 @@ import {
   RotateCcw
 } from "lucide-react";
 
-<<<<<<< HEAD
 interface CartItem {
   id: string;
   productId: string;
@@ -36,21 +35,13 @@ interface CartItem {
 
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-=======
-export default function CartPage() {
-  const [cartItems, setCartItems] = useState([]);
->>>>>>> origin/master
   const [loading, setLoading] = useState(true);
   const [promoCode, setPromoCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [promoError, setPromoError] = useState("");
 
   // Mock cart data
-<<<<<<< HEAD
   const mockCartItems: CartItem[] = [
-=======
-  const mockCartItems = [
->>>>>>> origin/master
     {
       id: "1",
       productId: "1",
@@ -98,11 +89,7 @@ export default function CartPage() {
     }, 1000);
   }, []);
 
-<<<<<<< HEAD
   const updateQuantity = (itemId: string, newQuantity: number) => {
-=======
-  const updateQuantity = (itemId, newQuantity) => {
->>>>>>> origin/master
     if (newQuantity < 1) return;
     
     setCartItems(prevItems =>
@@ -114,11 +101,7 @@ export default function CartPage() {
     );
   };
 
-<<<<<<< HEAD
   const removeItem = (itemId: string) => {
-=======
-  const removeItem = (itemId) => {
->>>>>>> origin/master
     setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
   };
 
@@ -283,16 +266,16 @@ export default function CartPage() {
                       <div className="text-right">
                         <div className="flex items-center gap-2">
                           <span className="font-bold text-lg">
-                            SAR {((item.salePrice || item.price) * item.quantity).toFixed(2)}
+                            ${((item.salePrice || item.price) * item.quantity).toFixed(2)}
                           </span>
                           {item.salePrice && (
                             <span className="text-sm text-muted-foreground line-through">
-                              SAR {(item.price * item.quantity).toFixed(2)}
+                              ${(item.price * item.quantity).toFixed(2)}
                             </span>
                           )}
                         </div>
                         <div className="text-sm text-muted-foreground">
-                          SAR {(item.salePrice || item.price).toFixed(2)} each
+                          ${(item.salePrice || item.price).toFixed(2)} each
                         </div>
                       </div>
                     </div>
@@ -321,7 +304,7 @@ export default function CartPage() {
               {/* Subtotal */}
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>SAR {calculateSubtotal().toFixed(2)}</span>
+                <span>${calculateSubtotal().toFixed(2)}</span>
               </div>
 
               {/* Shipping */}
@@ -331,7 +314,7 @@ export default function CartPage() {
                   {calculateShipping() === 0 ? (
                     <span className="text-green-600">Free</span>
                   ) : (
-                    `SAR ${calculateShipping().toFixed(2)}`
+                    `$${calculateShipping().toFixed(2)}`
                   )}
                 </span>
               </div>
@@ -339,14 +322,14 @@ export default function CartPage() {
               {/* Tax */}
               <div className="flex justify-between">
                 <span>Tax (15%)</span>
-                <span>SAR {calculateTax().toFixed(2)}</span>
+                <span>${calculateTax().toFixed(2)}</span>
               </div>
 
               {/* Discount */}
               {discount > 0 && (
                 <div className="flex justify-between text-green-600">
                   <span>Discount ({Math.round(discount * 100)}%)</span>
-                  <span>-SAR {calculateDiscount().toFixed(2)}</span>
+                  <span>-${calculateDiscount().toFixed(2)}</span>
                 </div>
               )}
 
@@ -355,7 +338,7 @@ export default function CartPage() {
               {/* Total */}
               <div className="flex justify-between text-lg font-bold">
                 <span>Total</span>
-                <span>SAR {calculateTotal().toFixed(2)}</span>
+                <span>${calculateTotal().toFixed(2)}</span>
               </div>
 
               {/* Promo Code */}
@@ -387,7 +370,7 @@ export default function CartPage() {
                   <div className="flex items-center gap-2 text-blue-800">
                     <Truck className="h-4 w-4" />
                     <span>
-                      Add SAR {(200 - calculateSubtotal()).toFixed(2)} more for free shipping!
+                      Add ${(200 - calculateSubtotal()).toFixed(2)} more for free shipping!
                     </span>
                   </div>
                 </div>
@@ -435,7 +418,7 @@ export default function CartPage() {
             <Truck className="h-12 w-12 mx-auto text-blue-600 mb-4" />
             <h3 className="font-semibold mb-2">Fast Delivery</h3>
             <p className="text-sm text-muted-foreground">
-              Quick delivery across Saudi Arabia within 2-3 business days
+              Quick delivery within 2-3 business days
             </p>
           </div>
           <div>

@@ -320,11 +320,7 @@ export default function CheckoutPage() {
                       id="saveAddress"
                       checked={shippingInfo.saveAddress}
                       onCheckedChange={(checked) => 
-<<<<<<< HEAD
-                        setShippingInfo(prev => ({ ...prev, saveAddress: checked as boolean }))
-=======
-                        setShippingInfo(prev => ({ ...prev, saveAddress: checked }))
->>>>>>> origin/master
+                      setShippingInfo(prev => ({ ...prev, saveAddress: checked as boolean }))
                       }
                     />
                     <Label htmlFor="saveAddress">Save this address for future orders</Label>

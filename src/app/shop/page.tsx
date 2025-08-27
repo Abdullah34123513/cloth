@@ -1,17 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Star, Heart, ShoppingCart, Filter, Grid, List, Search } from "lucide-react";
 
-<<<<<<< HEAD
 interface Product {
   id: string;
   name: string;
@@ -28,72 +29,58 @@ interface Product {
 }
 
 export default function ShopPage() {
+  const searchParams = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-=======
-export default function ShopPage() {
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
->>>>>>> origin/master
   const [loading, setLoading] = useState(true);
-  const [viewMode, setViewMode] = useState("grid");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
-  
-  // Filter states
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [priceRange, setPriceRange] = useState([0, 1000]);
-<<<<<<< HEAD
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-  const [selectedColors, setSelectedColors] = useState<string[]>([]);
-=======
-  const [selectedSizes, setSelectedSizes] = useState([]);
-  const [selectedColors, setSelectedColors] = useState([]);
->>>>>>> origin/master
+  const [priceRange, setPriceRange] = useState("all");
   const [sortBy, setSortBy] = useState("featured");
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 12;
+  const [filters, setFilters] = useState({
+    inStock: true,
+    onSale: false,
+    featured: false,
+    newArrivals: false,
+  });
 
-  // Mock data
+  // Mock categories
   const categories = [
-    { id: "men", name: "Men's Collection" },
-    { id: "women", name: "Women's Collection" },
-    { id: "traditional", name: "Traditional Wear" },
+    { id: "all", name: "All Categories" },
+    { id: "mens", name: "Men's Clothing" },
+    { id: "womens", name: "Women's Clothing" },
     { id: "accessories", name: "Accessories" },
+    { id: "traditional", name: "Traditional Wear" },
   ];
 
-  const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
-  const colors = ["Black", "White", "Blue", "Red", "Green", "Brown", "Gray"];
-
-<<<<<<< HEAD
+  // Mock products data
   const mockProducts: Product[] = [
-=======
-  const mockProducts = [
->>>>>>> origin/master
     {
       id: "1",
       name: "Premium Thobe",
       price: 299,
       salePrice: 249,
       image: "/api/placeholder/300/400",
-      category: "men",
+      category: "Men's Clothing",
       rating: 4.5,
       reviewCount: 128,
       isNew: true,
       sizes: ["S", "M", "L", "XL"],
-      colors: ["Black", "White", "Blue"],
+      colors: ["Black", "White", "Navy"],
     },
     {
       id: "2",
       name: "Elegant Abaya",
       price: 399,
       image: "/api/placeholder/300/400",
-      category: "women",
+      category: "Women's Clothing",
       rating: 4.8,
       reviewCount: 89,
       isFeatured: true,
       sizes: ["S", "M", "L"],
-      colors: ["Black", "Brown"],
+      colors: ["Black", "Navy", "Burgundy"],
     },
     {
       id: "3",
@@ -101,41 +88,30 @@ export default function ShopPage() {
       price: 349,
       salePrice: 299,
       image: "/api/placeholder/300/400",
-      category: "men",
+      category: "Men's Clothing",
       rating: 4.3,
       reviewCount: 67,
-      sizes: ["M", "L", "XL", "XXL"],
-      colors: ["White", "Gray"],
+      sizes: ["M", "L", "XL"],
+      colors: ["White", "Cream"],
     },
     {
       id: "4",
       name: "Designer Hijab",
       price: 149,
       image: "/api/placeholder/300/400",
-      category: "women",
+      category: "Women's Clothing",
       rating: 4.7,
-      reviewCount: 156,
+      reviewCount: 234,
       isNew: true,
       sizes: ["One Size"],
-      colors: ["Black", "Blue", "Red", "Green"],
+      colors: ["Black", "Blue", "Pink", "Green"],
     },
     {
       id: "5",
-      name: "Traditional Shemagh",
-      price: 89,
-      image: "/api/placeholder/300/400",
-      category: "accessories",
-      rating: 4.6,
-      reviewCount: 234,
-      sizes: ["One Size"],
-      colors: ["Red", "White", "Black"],
-    },
-    {
-      id: "6",
-      name: "Luxury Bisht",
+      name: "Traditional Bisht",
       price: 599,
       image: "/api/placeholder/300/400",
-      category: "men",
+      category: "Traditional Wear",
       rating: 4.9,
       reviewCount: 45,
       isFeatured: true,
@@ -143,27 +119,40 @@ export default function ShopPage() {
       colors: ["Black", "Brown"],
     },
     {
-      id: "7",
-      name: "Modest Dress",
-      price: 279,
-      salePrice: 229,
+      id: "6",
+      name: "Leather Belt",
+      price: 89,
+      salePrice: 69,
       image: "/api/placeholder/300/400",
-      category: "women",
-      rating: 4.4,
-      reviewCount: 78,
+      category: "Accessories",
+      rating: 4.2,
+      reviewCount: 156,
       sizes: ["S", "M", "L"],
-      colors: ["Blue", "Green", "Gray"],
+      colors: ["Black", "Brown"],
+    },
+    {
+      id: "7",
+      name: "Casual Shemagh",
+      price: 79,
+      image: "/api/placeholder/300/400",
+      category: "Accessories",
+      rating: 4.4,
+      reviewCount: 98,
+      isNew: true,
+      sizes: ["One Size"],
+      colors: ["Red", "White", "Black"],
     },
     {
       id: "8",
-      name: "Classic Ghutra",
-      price: 79,
+      name: "Formal Dishdasha",
+      price: 449,
       image: "/api/placeholder/300/400",
-      category: "accessories",
-      rating: 4.5,
-      reviewCount: 167,
-      sizes: ["One Size"],
-      colors: ["White", "Red"],
+      category: "Men's Clothing",
+      rating: 4.6,
+      reviewCount: 73,
+      isFeatured: true,
+      sizes: ["S", "M", "L", "XL"],
+      colors: ["White", "Navy"],
     },
   ];
 
@@ -171,127 +160,89 @@ export default function ShopPage() {
     // Simulate API call
     setTimeout(() => {
       setProducts(mockProducts);
-      setFilteredProducts(mockProducts);
       setLoading(false);
     }, 1000);
   }, []);
 
-  useEffect(() => {
-    let filtered = products;
-
-    // Search filter
-    if (searchTerm) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  const filteredProducts = products.filter(product => {
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         product.category.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === "all" || product.category.toLowerCase().includes(selectedCategory);
+    
+    let matchesPrice = true;
+    if (priceRange !== "all") {
+      const [min, max] = priceRange.split("-").map(Number);
+      matchesPrice = product.price >= min && product.price <= max;
     }
 
-    // Category filter
-    if (selectedCategory !== "all") {
-      filtered = filtered.filter(product => product.category === selectedCategory);
-    }
+    const matchesFilters = (!filters.inStock || product.sizes.length > 0) &&
+                          (!filters.onSale || product.salePrice) &&
+                          (!filters.featured || product.isFeatured) &&
+                          (!filters.newArrivals || product.isNew);
 
-    // Price filter
-    filtered = filtered.filter(product => {
-      const price = product.salePrice || product.price;
-      return price >= priceRange[0] && price <= priceRange[1];
-    });
+    return matchesSearch && matchesCategory && matchesPrice && matchesFilters;
+  });
 
-    // Size filter
-    if (selectedSizes.length > 0) {
-      filtered = filtered.filter(product =>
-        product.sizes.some(size => selectedSizes.includes(size))
-      );
-    }
-
-    // Color filter
-    if (selectedColors.length > 0) {
-      filtered = filtered.filter(product =>
-        product.colors.some(color => selectedColors.includes(color))
-      );
-    }
-
-    // Sort
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
       case "price-low":
-        filtered.sort((a, b) => (a.salePrice || a.price) - (b.salePrice || b.price));
-        break;
+        return a.price - b.price;
       case "price-high":
-        filtered.sort((a, b) => (b.salePrice || b.price) - (a.salePrice || a.price));
-        break;
+        return b.price - a.price;
+      case "name":
+        return a.name.localeCompare(b.name);
       case "rating":
-        filtered.sort((a, b) => b.rating - a.rating);
-        break;
-      case "newest":
-        filtered.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
-        break;
+        return b.rating - a.rating;
       default:
-        // Featured - keep original order
-        break;
+        return 0;
     }
+  });
 
-    setFilteredProducts(filtered);
-    setCurrentPage(1);
-  }, [products, searchTerm, selectedCategory, priceRange, selectedSizes, selectedColors, sortBy]);
+  const itemsPerPage = 12;
+  const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedProducts = sortedProducts.slice(startIndex, startIndex + itemsPerPage);
 
-<<<<<<< HEAD
-  const handleSizeChange = (size: string, checked: boolean | string) => {
-=======
-  const handleSizeChange = (size, checked) => {
->>>>>>> origin/master
-    if (checked) {
-      setSelectedSizes([...selectedSizes, size]);
-    } else {
-      setSelectedSizes(selectedSizes.filter(s => s !== size));
-    }
-  };
-
-<<<<<<< HEAD
-  const handleColorChange = (color: string, checked: boolean | string) => {
-=======
-  const handleColorChange = (color, checked) => {
->>>>>>> origin/master
-    if (checked) {
-      setSelectedColors([...selectedColors, color]);
-    } else {
-      setSelectedColors(selectedColors.filter(c => c !== color));
-    }
-  };
-
-  const clearFilters = () => {
-    setSearchTerm("");
-    setSelectedCategory("all");
-    setPriceRange([0, 1000]);
-    setSelectedSizes([]);
-    setSelectedColors([]);
-    setSortBy("featured");
-  };
-
-  // Pagination
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-muted rounded w-48" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, index) => (
+              <div key={index} className="space-y-4">
+                <div className="aspect-[3/4] bg-muted rounded-lg" />
+                <div className="h-4 bg-muted rounded w-3/4" />
+                <div className="h-4 bg-muted rounded w-1/2" />
+                <div className="h-6 bg-muted rounded w-1/3" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2">Shop</h1>
+        <p className="text-muted-foreground">
+          Discover our collection of premium Saudi fashion
+        </p>
+      </div>
+
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Filters Sidebar */}
         <div className={`lg:w-64 ${showFilters ? 'block' : 'hidden lg:block'}`}>
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="font-semibold">Filters</h3>
-                <Button variant="ghost" size="sm" onClick={clearFilters}>
-                  Clear All
-                </Button>
-              </div>
-
+            <CardContent className="p-6 space-y-6">
               {/* Search */}
-              <div className="mb-6">
-                <label className="text-sm font-medium mb-2 block">Search</label>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Search</label>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                   <Input
                     placeholder="Search products..."
                     value={searchTerm}
@@ -301,15 +252,14 @@ export default function ShopPage() {
                 </div>
               </div>
 
-              {/* Category */}
-              <div className="mb-6">
-                <label className="text-sm font-medium mb-2 block">Category</label>
+              {/* Category Filter */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Category</label>
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
                     {categories.map(category => (
                       <SelectItem key={category.id} value={category.id}>
                         {category.name}
@@ -320,54 +270,26 @@ export default function ShopPage() {
               </div>
 
               {/* Price Range */}
-              <div className="mb-6">
-                <label className="text-sm font-medium mb-2 block">
-                  Price Range: SAR {priceRange[0]} - SAR {priceRange[1]}
-                </label>
-                <Slider
-                  value={priceRange}
-                  onValueChange={setPriceRange}
-                  max={1000}
-                  step={10}
-                  className="w-full"
-                />
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Price Range</label>
+                <Select value={priceRange} onValueChange={setPriceRange}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Prices</SelectItem>
+                    <SelectItem value="0-50">Under $50</SelectItem>
+                    <SelectItem value="50-100">$50 - $100</SelectItem>
+                    <SelectItem value="100-200">$100 - $200</SelectItem>
+                    <SelectItem value="200-500">$200 - $500</SelectItem>
+                    <SelectItem value="500+">Over $500</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
-              {/* Sizes */}
-              <div className="mb-6">
-                <label className="text-sm font-medium mb-2 block">Sizes</label>
-                <div className="flex flex-wrap gap-2">
-                  {sizes.map(size => (
-                    <label key={size} className="flex items-center space-x-2 cursor-pointer">
-                      <Checkbox
-                        checked={selectedSizes.includes(size)}
-                        onCheckedChange={(checked) => handleSizeChange(size, checked)}
-                      />
-                      <span className="text-sm">{size}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Colors */}
-              <div className="mb-6">
-                <label className="text-sm font-medium mb-2 block">Colors</label>
-                <div className="flex flex-wrap gap-2">
-                  {colors.map(color => (
-                    <label key={color} className="flex items-center space-x-2 cursor-pointer">
-                      <Checkbox
-                        checked={selectedColors.includes(color)}
-                        onCheckedChange={(checked) => handleColorChange(color, checked)}
-                      />
-                      <span className="text-sm">{color}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Sort */}
-              <div>
-                <label className="text-sm font-medium mb-2 block">Sort By</label>
+              {/* Sort By */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Sort By</label>
                 <Select value={sortBy} onValueChange={setSortBy}>
                   <SelectTrigger>
                     <SelectValue />
@@ -376,45 +298,91 @@ export default function ShopPage() {
                     <SelectItem value="featured">Featured</SelectItem>
                     <SelectItem value="price-low">Price: Low to High</SelectItem>
                     <SelectItem value="price-high">Price: High to Low</SelectItem>
-                    <SelectItem value="rating">Highest Rated</SelectItem>
-                    <SelectItem value="newest">Newest First</SelectItem>
+                    <SelectItem value="name">Name</SelectItem>
+                    <SelectItem value="rating">Rating</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+
+              {/* Additional Filters */}
+              <div className="space-y-3">
+                <label className="text-sm font-medium">Filters</label>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="inStock"
+                      checked={filters.inStock}
+                      onCheckedChange={(checked) => 
+                        setFilters(prev => ({ ...prev, inStock: checked as boolean }))
+                      }
+                    />
+                    <Label htmlFor="inStock" className="text-sm">In Stock</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="onSale"
+                      checked={filters.onSale}
+                      onCheckedChange={(checked) => 
+                        setFilters(prev => ({ ...prev, onSale: checked as boolean }))
+                      }
+                    />
+                    <Label htmlFor="onSale" className="text-sm">On Sale</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="featured"
+                      checked={filters.featured}
+                      onCheckedChange={(checked) => 
+                        setFilters(prev => ({ ...prev, featured: checked as boolean }))
+                      }
+                    />
+                    <Label htmlFor="featured" className="text-sm">Featured</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="newArrivals"
+                      checked={filters.newArrivals}
+                      onCheckedChange={(checked) => 
+                        setFilters(prev => ({ ...prev, newArrivals: checked as boolean }))
+                      }
+                    />
+                    <Label htmlFor="newArrivals" className="text-sm">New Arrivals</Label>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Products Grid */}
+        {/* Main Content */}
         <div className="flex-1">
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-            <div>
-              <h1 className="text-3xl font-bold">Shop</h1>
-              <p className="text-muted-foreground">
-                {filteredProducts.length} products found
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
+          {/* Controls Bar */}
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-4">
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setShowFilters(!showFilters)}
                 className="lg:hidden"
+                onClick={() => setShowFilters(!showFilters)}
               >
                 <Filter className="h-4 w-4 mr-2" />
                 Filters
               </Button>
+              <p className="text-sm text-muted-foreground">
+                Showing {paginatedProducts.length} of {filteredProducts.length} products
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
               <Button
                 variant={viewMode === "grid" ? "default" : "outline"}
-                size="sm"
+                size="icon"
                 onClick={() => setViewMode("grid")}
               >
                 <Grid className="h-4 w-4" />
               </Button>
               <Button
                 variant={viewMode === "list" ? "default" : "outline"}
-                size="sm"
+                size="icon"
                 onClick={() => setViewMode("list")}
               >
                 <List className="h-4 w-4" />
@@ -422,184 +390,174 @@ export default function ShopPage() {
             </div>
           </div>
 
-          {/* Products */}
-          {loading ? (
+          {/* Products Grid/List */}
+          {viewMode === "grid" ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {[...Array(8)].map((_, index) => (
-                <Card key={index} className="animate-pulse">
-                  <div className="aspect-[3/4] bg-muted" />
+              {paginatedProducts.map(product => (
+                <Card key={product.id} className="group overflow-hidden hover:shadow-lg transition-shadow">
+                  <div className="relative aspect-[3/4] overflow-hidden">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-2 left-2 flex flex-col gap-2">
+                      {product.isNew && (
+                        <Badge variant="secondary">New</Badge>
+                      )}
+                      {product.isFeatured && (
+                        <Badge variant="default">Featured</Badge>
+                      )}
+                      {product.salePrice && (
+                        <Badge variant="destructive">Sale</Badge>
+                      )}
+                    </div>
+                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button size="icon" variant="secondary" className="h-8 w-8">
+                        <Heart className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
                   <CardContent className="p-4">
-                    <div className="h-4 bg-muted rounded mb-2" />
-                    <div className="h-4 bg-muted rounded w-3/4 mb-2" />
-                    <div className="h-6 bg-muted rounded w-1/2" />
+                    <div className="text-sm text-muted-foreground mb-1">
+                      {product.category}
+                    </div>
+                    <h3 className="font-semibold mb-2 line-clamp-2">
+                      {product.name}
+                    </h3>
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="flex items-center">
+                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-sm ml-1">{product.rating}</span>
+                      </div>
+                      <span className="text-sm text-muted-foreground">
+                        ({product.reviewCount})
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold">
+                          ${product.salePrice || product.price}
+                        </span>
+                        {product.salePrice && (
+                          <span className="text-sm text-muted-foreground line-through">
+                            ${product.price}
+                          </span>
+                        )}
+                      </div>
+                      <Button size="sm" variant="outline">
+                        <ShoppingCart className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
             </div>
           ) : (
-            <>
-              {viewMode === "grid" ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {currentProducts.map(product => (
-                    <Card key={product.id} className="group overflow-hidden hover:shadow-lg transition-shadow">
-                      <div className="relative aspect-[3/4] overflow-hidden">
+            <div className="space-y-4">
+              {paginatedProducts.map(product => (
+                <Card key={product.id}>
+                  <CardContent className="p-6">
+                    <div className="flex gap-6">
+                      <div className="flex-shrink-0">
                         <img
                           src={product.image}
                           alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="w-32 h-40 object-cover rounded-md"
                         />
-                        <div className="absolute top-2 left-2 flex flex-col gap-2">
-                          {product.isNew && (
-                            <Badge variant="secondary">New</Badge>
-                          )}
-                          {product.salePrice && (
-                            <Badge variant="destructive">Sale</Badge>
-                          )}
-                        </div>
-                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button size="icon" variant="secondary" className="h-8 w-8">
-                            <Heart className="h-4 w-4" />
-                          </Button>
-                        </div>
                       </div>
-                      <CardContent className="p-4">
-                        <h3 className="font-semibold mb-2 line-clamp-2">
-                          {product.name}
-                        </h3>
-                        <div className="flex items-center gap-2 mb-3">
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start mb-2">
+                          <div>
+                            <div className="text-sm text-muted-foreground mb-1">
+                              {product.category}
+                            </div>
+                            <h3 className="font-semibold text-lg">{product.name}</h3>
+                          </div>
+                          <div className="flex gap-2">
+                            {product.isNew && <Badge variant="secondary">New</Badge>}
+                            {product.isFeatured && <Badge variant="default">Featured</Badge>}
+                            {product.salePrice && <Badge variant="destructive">Sale</Badge>}
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-4 mb-4">
                           <div className="flex items-center">
                             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                             <span className="text-sm ml-1">{product.rating}</span>
                             <span className="text-sm text-muted-foreground ml-1">
-                              ({product.reviewCount})
+                              ({product.reviewCount} reviews)
                             </span>
                           </div>
+                          <div className="text-sm text-muted-foreground">
+                            Sizes: {product.sizes.join(", ")}
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            Colors: {product.colors.join(", ")}
+                          </div>
                         </div>
+
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="font-bold">
-                              {product.salePrice ? `SAR ${product.salePrice}` : `SAR ${product.price}`}
+                            <span className="font-bold text-lg">
+                              ${product.salePrice || product.price}
                             </span>
                             {product.salePrice && (
                               <span className="text-sm text-muted-foreground line-through">
-                                SAR {product.price}
+                                ${product.price}
                               </span>
                             )}
                           </div>
-                          <Button size="sm" variant="outline">
-                            <ShoppingCart className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {currentProducts.map(product => (
-                    <Card key={product.id} className="overflow-hidden">
-                      <div className="flex">
-                        <div className="w-48 flex-shrink-0">
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <CardContent className="flex-1 p-6">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <div className="flex items-center gap-2 mb-2">
-                                {product.isNew && (
-                                  <Badge variant="secondary">New</Badge>
-                                )}
-                                {product.salePrice && (
-                                  <Badge variant="destructive">Sale</Badge>
-                                )}
-                              </div>
-                              <h3 className="text-lg font-semibold mb-2">
-                                {product.name}
-                              </h3>
-                              <div className="flex items-center gap-2 mb-3">
-                                <div className="flex items-center">
-                                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                                  <span className="text-sm ml-1">{product.rating}</span>
-                                  <span className="text-sm text-muted-foreground ml-1">
-                                    ({product.reviewCount})
-                                  </span>
-                                </div>
-                              </div>
-                              <div className="flex items-center gap-4 mb-4">
-                                <div className="flex items-center gap-2">
-                                  <span className="font-bold text-lg">
-                                    {product.salePrice ? `SAR ${product.salePrice}` : `SAR ${product.price}`}
-                                  </span>
-                                  {product.salePrice && (
-                                    <span className="text-sm text-muted-foreground line-through">
-                                      SAR {product.price}
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-                              <div className="flex gap-2 mb-4">
-                                <span className="text-sm text-muted-foreground">Sizes:</span>
-                                {product.sizes.map(size => (
-                                  <Badge key={size} variant="outline" className="text-xs">
-                                    {size}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </div>
-                            <div className="flex gap-2">
-                              <Button size="icon" variant="outline">
-                                <Heart className="h-4 w-4" />
-                              </Button>
-                              <Button>
-                                <ShoppingCart className="h-4 w-4 mr-2" />
-                                Add to Cart
-                              </Button>
-                            </div>
+                          <div className="flex gap-2">
+                            <Button size="sm" variant="outline">
+                              <Heart className="h-4 w-4" />
+                            </Button>
+                            <Button size="sm">
+                              <ShoppingCart className="h-4 w-4" />
+                            </Button>
                           </div>
-                        </CardContent>
+                        </div>
                       </div>
-                    </Card>
-                  ))}
-                </div>
-              )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
 
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="mt-8">
-                  <Pagination>
-                    <PaginationContent>
-                      <PaginationItem>
-                        <PaginationPrevious
-                          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                          className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                        />
-                      </PaginationItem>
-                      {[...Array(totalPages)].map((_, index) => (
-                        <PaginationItem key={index}>
-                          <PaginationLink
-                            onClick={() => setCurrentPage(index + 1)}
-                            isActive={currentPage === index + 1}
-                            className="cursor-pointer"
-                          >
-                            {index + 1}
-                          </PaginationLink>
-                        </PaginationItem>
-                      ))}
-                      <PaginationItem>
-                        <PaginationNext
-                          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                          className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                        />
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
-                </div>
-              )}
-            </>
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-8">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious 
+                      onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                      className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                  
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        onClick={() => setCurrentPage(page)}
+                        isActive={currentPage === page}
+                        className="cursor-pointer"
+                      >
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  
+                  <PaginationItem>
+                    <PaginationNext 
+                      onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                      className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
           )}
         </div>
       </div>
