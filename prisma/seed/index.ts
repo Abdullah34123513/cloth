@@ -5,34 +5,42 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding database...");
 
-  // Create categories
+  // Create or update categories
   const categories = await Promise.all([
-    prisma.category.create({
-      data: {
+    prisma.category.upsert({
+      where: { slug: "mens-clothing" },
+      update: {},
+      create: {
         name: "Men's Clothing",
         slug: "mens-clothing",
         description: "Stylish clothing for men",
         image: "/images/categories/mens.jpg",
       },
     }),
-    prisma.category.create({
-      data: {
+    prisma.category.upsert({
+      where: { slug: "womens-clothing" },
+      update: {},
+      create: {
         name: "Women's Clothing",
         slug: "womens-clothing",
         description: "Fashionable clothing for women",
         image: "/images/categories/womens.jpg",
       },
     }),
-    prisma.category.create({
-      data: {
+    prisma.category.upsert({
+      where: { slug: "accessories" },
+      update: {},
+      create: {
         name: "Accessories",
         slug: "accessories",
         description: "Fashion accessories and jewelry",
         image: "/images/categories/accessories.jpg",
       },
     }),
-    prisma.category.create({
-      data: {
+    prisma.category.upsert({
+      where: { slug: "shoes" },
+      update: {},
+      create: {
         name: "Shoes",
         slug: "shoes",
         description: "Footwear for all occasions",
@@ -43,18 +51,22 @@ async function main() {
 
   console.log("✅ Categories created");
 
-  // Create users
+  // Create or update users
   const users = await Promise.all([
-    prisma.user.create({
-      data: {
+    prisma.user.upsert({
+      where: { email: "customer@example.com" },
+      update: {},
+      create: {
         name: "Ahmed Mohammed",
         email: "customer@example.com",
         phone: "+1234567890",
         role: "CUSTOMER",
       },
     }),
-    prisma.user.create({
-      data: {
+    prisma.user.upsert({
+      where: { email: "admin@example.com" },
+      update: {},
+      create: {
         name: "Admin User",
         email: "admin@example.com",
         phone: "+1234567891",
@@ -65,10 +77,12 @@ async function main() {
 
   console.log("✅ Users created");
 
-  // Create products
+  // Create or update products
   const products = await Promise.all([
-    prisma.product.create({
-      data: {
+    prisma.product.upsert({
+      where: { sku: "TSHIRT-001" },
+      update: {},
+      create: {
         name: "Classic White T-Shirt",
         slug: "classic-white-t-shirt",
         description: "A comfortable and stylish white t-shirt made from 100% cotton.",
@@ -92,8 +106,10 @@ async function main() {
         },
       },
     }),
-    prisma.product.create({
-      data: {
+    prisma.product.upsert({
+      where: { sku: "JEANS-001" },
+      update: {},
+      create: {
         name: "Denim Jeans",
         slug: "denim-jeans",
         description: "Classic blue denim jeans with a comfortable fit.",
@@ -118,8 +134,10 @@ async function main() {
         },
       },
     }),
-    prisma.product.create({
-      data: {
+    prisma.product.upsert({
+      where: { sku: "DRESS-001" },
+      update: {},
+      create: {
         name: "Summer Dress",
         slug: "summer-dress",
         description: "A beautiful summer dress perfect for warm weather.",
@@ -142,8 +160,10 @@ async function main() {
         },
       },
     }),
-    prisma.product.create({
-      data: {
+    prisma.product.upsert({
+      where: { sku: "BAG-001" },
+      update: {},
+      create: {
         name: "Leather Handbag",
         slug: "leather-handbag",
         description: "Genuine leather handbag with multiple compartments.",
@@ -165,8 +185,10 @@ async function main() {
         },
       },
     }),
-    prisma.product.create({
-      data: {
+    prisma.product.upsert({
+      where: { sku: "SHOES-001" },
+      update: {},
+      create: {
         name: "Running Shoes",
         slug: "running-shoes",
         description: "Comfortable running shoes with excellent cushioning.",
@@ -190,8 +212,10 @@ async function main() {
         },
       },
     }),
-    prisma.product.create({
-      data: {
+    prisma.product.upsert({
+      where: { sku: "SHIRT-001" },
+      update: {},
+      create: {
         name: "Casual Shirt",
         slug: "casual-shirt",
         description: "A comfortable casual shirt perfect for everyday wear.",
@@ -216,15 +240,19 @@ async function main() {
 
   console.log("✅ Products created");
 
-  // Create carts for users
+  // Create carts for users if they don't exist
   await Promise.all([
-    prisma.cart.create({
-      data: {
+    prisma.cart.upsert({
+      where: { userId: users[0].id },
+      update: {},
+      create: {
         userId: users[0].id,
       },
     }),
-    prisma.cart.create({
-      data: {
+    prisma.cart.upsert({
+      where: { userId: users[1].id },
+      update: {},
+      create: {
         userId: users[1].id,
       },
     }),
@@ -232,9 +260,16 @@ async function main() {
 
   console.log("✅ Carts created");
 
-  // Create sample addresses
-  await Promise.all([
-    prisma.address.create({
+  // Create sample addresses if they don't exist
+  const existingAddress = await prisma.address.findFirst({
+    where: {
+      userId: users[0].id,
+      type: "SHIPPING"
+    }
+  });
+
+  if (!existingAddress) {
+    await prisma.address.create({
       data: {
         userId: users[0].id,
         type: "SHIPPING",
@@ -248,23 +283,37 @@ async function main() {
         zipCode: "10001",
         isDefault: true,
       },
-    }),
-  ]);
+    });
+  }
 
   console.log("✅ Addresses created");
 
-  // Create sample reviews
+  // Create sample reviews if they don't exist
   await Promise.all([
-    prisma.review.create({
-      data: {
+    prisma.review.upsert({
+      where: {
+        userId_productId: {
+          userId: users[0].id,
+          productId: products[0].id
+        }
+      },
+      update: {},
+      create: {
         userId: users[0].id,
         productId: products[0].id,
         rating: 5,
         comment: "Great quality t-shirt! Very comfortable.",
       },
     }),
-    prisma.review.create({
-      data: {
+    prisma.review.upsert({
+      where: {
+        userId_productId: {
+          userId: users[0].id,
+          productId: products[1].id
+        }
+      },
+      update: {},
+      create: {
         userId: users[0].id,
         productId: products[1].id,
         rating: 4,
