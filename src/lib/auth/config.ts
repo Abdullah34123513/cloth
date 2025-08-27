@@ -1,10 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-<<<<<<< HEAD
 import { db } from "@/lib/db";
-import bcrypt from "bcryptjs";
-=======
->>>>>>> origin/master
+import * as bcrypt from "bcryptjs";
 
 export const authOptions = {
   providers: [
@@ -19,7 +16,6 @@ export const authOptions = {
           return null;
         }
 
-<<<<<<< HEAD
         try {
           // Find user in database
           const user = await db.user.findUnique({
@@ -51,38 +47,6 @@ export const authOptions = {
           console.error("Authentication error:", error);
           return null;
         }
-=======
-        // Mock user database
-        const users = [
-          {
-            id: "1",
-            email: "customer@example.com",
-            name: "Ahmed Mohammed",
-            role: "CUSTOMER",
-            password: "password123"
-          },
-          {
-            id: "2",
-            email: "admin@example.com",
-            name: "Admin User",
-            role: "ADMIN",
-            password: "password123"
-          }
-        ];
-
-        const user = users.find(u => u.email === credentials.email);
-
-        if (!user || user.password !== credentials.password) {
-          return null;
-        }
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-        };
->>>>>>> origin/master
       }
     })
   ],
